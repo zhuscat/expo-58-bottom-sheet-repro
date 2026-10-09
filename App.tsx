@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { BottomSheet, BottomSheetView } from '@expo/ui/community/bottom-sheet'
+import { useRef } from 'react'
+import { Button, Text, View, useColorScheme } from 'react-native'
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const colorScheme = useColorScheme()
+  const ink = { color: colorScheme === 'dark' ? '#FFFFFF' : '#000000' }
+  const sheetRef = useRef<BottomSheet>(null)
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  return (
+    <View style={{ flex: 1 }}>
+      <View
+        style={{
+          height: 100,
+        }}
+      />
+      <Button title="Open" onPress={() => sheetRef.current?.present()} />
+
+      <BottomSheet ref={sheetRef} index={-1} enablePanDownToClose>
+        <BottomSheetView style={{ padding: 24 }}>
+          <Text style={ink}>This sheet sizes itself to its content.</Text>
+        </BottomSheetView>
+      </BottomSheet>
+    </View>
+  )
+}
